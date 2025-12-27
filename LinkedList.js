@@ -15,7 +15,6 @@ export class LinkedList {
         }
 
         //La lista tiene al menos un elemento (Primer nodo no es null)
-
         else if (this.tailNode === null) {
             this.tailNode = newNode;
             newNode.setNextNode(null);
@@ -27,6 +26,7 @@ export class LinkedList {
             this.tailNode = newNode;
             newNode.setNextNode(null);
         }
+
     };
 
     prepend(value) {
@@ -86,7 +86,6 @@ export class LinkedList {
             currentNode = currentNode.getNextNode();
         }
 
-        //Si no se encuentra un nodo en ese indice devolver undefined
         return undefined;
     };
 
@@ -152,40 +151,43 @@ export class LinkedList {
 
     insertAt(index, ...values) {
 
-    if (index < 0 || index > this.size()) throw new RangeError("Index out of range");
+        if (index < 0 || index > this.size()) throw new RangeError("Index out of range");
 
-    let valuesArray = values;
-    let currentIndex = 0;
-    let previousNode;
-    let currentNode = this.headNode;
+        let valuesArray = values;
+        let currentIndex = 0;
+        let previousNode = this.headNode;
+        let currentNode = this.headNode;
 
-    while(currentNode !== null) {
+        while(currentNode !== null) {
 
-        if (currentIndex === index) {
-            //realizar inserción de los elementos dentro del array value, creando un nodo para cada value y actualizando sus punteros a los nodos siguientes.
-            if (index === 0) previousNode = currentNode;
+            if (currentIndex === index) {
 
-            valuesArray.forEach( (value, indexOfValueInArray, array) => {
+                for (let i = 0; i < valuesArray.length; i++) {
 
-                const newNode = new Node(value);
-                //el ultimo de los value debe tener un puntero al nodo que tiene la variable currentnode
-                previousNode.setNextNode(newNode);
+                    const newNode = new Node(valuesArray[i]);
 
-                if (indexOfValueInArray === (array.length -1)) {
-                    newNode.setNextNode(currentNode);
-                    return;
-                }
+                    if (index === 0) {
+                        newNode.setNextNode(this.headNode);
+                        this.headNode = newNode;
+                        index = -1;
+                        previousNode = newNode;
+                        continue;
+                    }
 
-                previousNode = newNode;
+                    previousNode.setNextNode(newNode);
+                    if (i === (valuesArray.length -1)) {
+                        newNode.setNextNode(currentNode);
+                        return;
+                    }
 
-            })
+                    previousNode = newNode;
+                }          
+            }
 
-        }
-
-        previousNode = currentNode;
-        currentIndex++;
-        currentNode = currentNode.getNextNode();
-    }   
+            previousNode = currentNode;
+            currentIndex++;
+            currentNode = currentNode.getNextNode();
+        }   
 
     };
 
